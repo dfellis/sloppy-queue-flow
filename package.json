@@ -1,6 +1,6 @@
 {
 	"name": "sloppy-queue-flow",
-	"description": "A constructor object for queue-flow that sacrifices queue correctness for parallelism",
+	"description": "A constructor function for queue-flow that sacrifices queue correctness for parallelism",
 	"homepage": "https://github.com/dfellis/sloppy-queue-flow",
 	"author": "David Ellis",
 	"version": "0.0.1",
