@@ -15,8 +15,8 @@ exports.sloppy = function(test) {
 			setTimeout(callback.bind(this, val*2), 1000/val);
 		})
 		.toArray(function(outArr) {
-			test.equal([2, 4, 6, 8, 10].toString(), outArr.sort(function(a,b) { return a-b; }).toString(), 'sloppy-queue-flow passes along all values');
 			test.notEqual([2, 4, 6, 8, 10].toString(), outArr.toString(), 'sloppy-queue-flow passes along results on a first-done basis');
+			test.equal([2, 4, 6, 8, 10].toString(), outArr.sort(function(a,b) { return a-b; }).toString(), 'sloppy-queue-flow passes along all values');
 			test.done();
 		});
 };
