@@ -23,6 +23,22 @@ var sloppy = require('sloppy-queue-flow');
 q('sloppyQueue', sloppy) // Code here
 ```
 
+## When should you use sloppy-queue-flow over the "regular" queue-flow?
+
+### Are the items in the queue totally independent?
+
+Such as HTTP request-response pairs that will be served to totally different users and have no impact on one another? Then ``sloppy-queue-flow`` will improve the performance of the system and push the bottlenecks out to your I/O.
+
+### Can the items in the queue be processed in any order even if the outcome depends on all of them?
+
+Such as ``4*3*2 == 2*3*4``? Then ``sloppy-queue-flow`` can be used, but you must be cautious. If at any time in the future you change it to something that *can't* be reordered, such as ``4/3/2 != 2/3/4``, then you need to drop usage of ``sloppy-queue-flow``.
+
+### General Rule of Thumb
+
+``queue-flow`` as a source code organizer for event/request handlers can use ``sloppy-queue-flow``.
+
+``queue-flow`` as a data processor should not use ``sloppy-queue-flow``, unless you're *sure* it won't screw things up and you're *sure* the queueing is the bottleneck (if each step along the flow has a predictable processing time, ``sloppy-queue-flow`` will not provide any measureable advantage if the number of stages exceeds the number of processor cores).
+
 ## License (MIT)
 
 Copyright (C) 2012 by David Ellis
