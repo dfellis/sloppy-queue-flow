@@ -1,4 +1,4 @@
-# sloppy-queue-flow
+# sloppy-queue-flow [![Build Status](https://secure.travis-ci.org/dfellis/sloppy-queue-flow.png)](http://travis-ci.org/dfellis/sloppy-queue-flow)
 
 ## Quick install instructions
 
