@@ -3,7 +3,7 @@
 	"description": "A constructor function for queue-flow that sacrifices queue correctness for parallelism",
 	"homepage": "https://github.com/dfellis/sloppy-queue-flow",
 	"author": "David Ellis",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"main": "./lib/sloppy-queue-flow",
 	"dependencies": {
 		"queue-flow": ">=0.5.6"

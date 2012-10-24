@@ -93,8 +93,8 @@ calls the special handler function, if it's ready.</p>             </td>        
     <span class="p">}</span>
   <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Start processing the queue after the next JS event loop cycle and return the queue
 object to the remaining code.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">nameOrArray</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">closeOnEmpty</span><span class="p">();</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">push</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">nameOrArray</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;empty&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">close</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
 <span class="p">}</span>
