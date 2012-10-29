@@ -23,8 +23,19 @@ exports.sloppy = function(test) {
 		});
 };
 
-exports.jscoverage = function(test) {
+exports.badHandler = function(test) {
     test.expect(1);
+    q('blah', sloppy)
+        .on('push', 'notAValidHandler')
+        .toArray(function(outArr) {
+            test.equal([1, 2, 3, 4, 5].toString(), outArr.toString(), 'sloppy-queue-flow ignored the invalid event handler');
+            test.done();
+        });
+    q('blah').push(1, 2, 3, 4, 5).close();
+};
+
+exports.jscoverage = function(test) {
+    test.expect(2);
     var file, tmp, source, total, touched;
     for (var i in _$jscoverage) {
         test.ok(true, 'only one file tested by jscoverage');
@@ -32,18 +43,18 @@ exports.jscoverage = function(test) {
         tmp = _$jscoverage[i];
         source = _$jscoverage[i].source;
         total = touched = 0;
-        for (var n=0,len = tmp.length; n < len ; n++){
-            if (tmp[n] !== undefined) {
-                total ++ ;
-                if (tmp[n] > 0) {
-                    touched ++;
+        for(var n = 0, len = tmp.length; n < len; n++) {
+            if(/sloppy\.prototype = q\.Q\.prototype/.test(source[n-1])) tmp[n] = undefined; // This line can only possibly run in the browser
+            if(tmp[n] !== undefined) {
+                total++;
+                if(tmp[n] > 0) {
+                    touched++;
                 } else {
                     console.log(n + "\t:" + source[n-1]);
                 }
             }
         }
-        // test.equal(total, touched, 'All lines of code touched by test suite');
-        // Eventually will uncomment the above line, just like in the main queue-flow repo
+        test.equal(total, touched, 'All lines of code touched by test suite');
     }
     test.done();
 };
