@@ -34,6 +34,30 @@ exports.badHandler = function(test) {
     q('blah').push(1, 2, 3, 4, 5).close();
 };
 
+exports.processNextTickPatch = function(test) {
+    test.expect(2);
+    process.oldNextTick = process.nextTick;
+    process.nextTick = undefined;
+    var sloppy2 = require('../lib/sloppy-queue-flow', true);
+    test.equal(process.nextTick, setTimeout, 'setTimeout is properly substituted in for process.nextTick');
+    // jscoverage can't handle two different requires of the same module where the module goes through a
+    // different initialization path. The following is a hack to get the coverage report to remove the
+    // clearly-covered lines of code. (I don't expect this code to change much, if ever, so this should be fine)
+    for(var i in _$jscoverage) {
+        source = _$jscoverage[i].source;
+        for(var j = 0; j < _$jscoverage[i].length; j++) {
+            if(/process = process/.test(source[j-1])) _$jscoverage[i][j] = undefined;
+            if(/process\.nextTick = process\.nextTick/.test(source[j-1])) _$jscoverage[i][j] = undefined;
+        }
+    }
+    test.ok(!!sloppy2(), 'can construct sloppy-queue-flow objects without process.nextTick');
+    // Restore environment back to normal
+    process.nextTick = process.oldNextTick;
+    process.oldNextTick = undefined;
+    test.done();
+};
+
+
 exports.jscoverage = function(test) {
     test.expect(2);
     var file, tmp, source, total, touched;
