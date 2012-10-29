@@ -11,7 +11,8 @@
 	"devDependencies": {
 		"nodeunit": "*",
 		"docco": "*",
-		"uglify-js": "*"
+		"uglify-js": "*",
+        "jscoverage": ">=0.2.5"
 	},
 	"engines": {
 		"node": "*"
