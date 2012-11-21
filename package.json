@@ -6,7 +6,7 @@
 	"version": "0.1.8",
 	"main": "./lib/sloppy-queue-flow",
 	"dependencies": {
-		"queue-flow": ">=0.5.24"
+		"queue-flow": ">=0.5.27"
 	},
 	"devDependencies": {
 		"nodeunit": "*",
