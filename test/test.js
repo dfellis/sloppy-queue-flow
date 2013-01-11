@@ -3,6 +3,14 @@ var require = jscoverage.require(module);
 var q = require('queue-flow');
 var sloppy = require('../lib/sloppy-queue-flow', true);
 
+exports.sloppyType = function(test) {
+    test.expect(3);
+    test.ok(!!sloppy.prototype);
+    test.ok(!!(new sloppy().map));
+    test.ok(!!q(undefined, sloppy).map);
+    test.done();
+};
+
 exports.sloppy = function(test) {
 	test.expect(3);
 	q([1, 2, 3, 4, 5])

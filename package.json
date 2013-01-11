@@ -3,9 +3,9 @@
 	"description": "A constructor function for queue-flow that sacrifices queue correctness for parallelism",
 	"homepage": "https://github.com/dfellis/sloppy-queue-flow",
 	"author": "David Ellis",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"main": "./lib/sloppy-queue-flow",
-	"dependencies": {
+	"peerDependencies": {
 		"queue-flow": ">=0.5.27"
 	},
 	"devDependencies": {
@@ -15,7 +15,7 @@
         "jscoverage": ">=0.2.5"
 	},
 	"engines": {
-		"node": "*"
+		"node": ">=0.8.17"
 	},
 	"scripts": {
 		"prepublish": "npm test && docco ./lib/sloppy-queue-flow.js && uglifyjs ./lib/sloppy-queue-flow.js > ./lib/sloppy-queue-flow.min.js && git commit -am \"Automatic doc and minification for version $npm_package_version\" && git tag $npm_package_version && git push && git push --tags",
