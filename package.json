@@ -12,7 +12,8 @@
 		"nodeunit": "*",
 		"docco": "*",
 		"uglify-js": "*",
-        "jscoverage": ">=0.2.5"
+        "jscoverage": "0.2.5",
+        "queue-flow": ">=0.5.27"
 	},
 	"engines": {
 		"node": ">=0.8.17"
