@@ -53,6 +53,38 @@ exports.kill = function(test) {
 	test.done();
 };
 
+exports.closeExecutesAllDataStaticAndNamedQueues = function(test) {
+    test.expect(2);
+    var runs = 0;
+    q([1, 2, 3, 4], sloppy)
+        .map(function(val, callback) {
+            setTimeout(function() {
+                callback(val*2);
+            }, 1000);
+        })
+        .reduce(function(cum, cur) {
+            return cum + cur;
+        }, function(result) {
+            test.equal(20, result, 'received all data from static queue');
+            runs++;
+            if(runs == 2) test.done();
+        }, 0);
+    q('namedSlowQueue', sloppy)
+        .map(function(val, callback) {
+            setTimeout(function() {
+                callback(val*2);
+            }, 1000);
+        })
+        .reduce(function(cum, cur) {
+            return cum + cur;
+        }, function(result) {
+            test.equal(20, result, 'received all data from named queue');
+            runs++;
+            if(runs == 2) test.done();
+        }, 0);
+    q('namedSlowQueue').push(1, 2, 3, 4).close();
+};
+
 exports.processNextTickPatch = function(test) {
 	test.expect(2);
 	process.oldNextTick = process.nextTick;
