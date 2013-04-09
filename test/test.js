@@ -1,7 +1,7 @@
-var jscoverage = require('jscoverage');
-var require = jscoverage.require(module);
 var q = require('queue-flow');
-var sloppy = require('../lib/sloppy-queue-flow', true);
+var jscoverage = require('jscoverage');
+jscoverage.enableCoverage(true);
+var sloppy = jscoverage.require(module, '../lib/sloppy-queue-flow');
 
 exports.sloppyType = function(test) {
     test.expect(3);
@@ -29,17 +29,6 @@ exports.sloppy = function(test) {
 			test.equal([2, 4, 6, 8, 10].toString(), outArr.sort(function(a,b) { return a-b; }).toString(), 'sloppy-queue-flow passes along all values');
 			test.done();
 		});
-};
-
-exports.badHandler = function(test) {
-	test.expect(1);
-	q('blah', sloppy)
-		.on('push', 'notAValidHandler')
-		.toArray(function(outArr) {
-			test.equal([1, 2, 3, 4, 5].toString(), outArr.toString(), 'sloppy-queue-flow ignored the invalid event handler');
-			test.done();
-		});
-	q('blah').push(1, 2, 3, 4, 5).close();
 };
 
 exports.kill = function(test) {
@@ -83,29 +72,6 @@ exports.closeExecutesAllDataStaticAndNamedQueues = function(test) {
             if(runs == 2) test.done();
         }, 0);
     q('namedSlowQueue').push(1, 2, 3, 4).close();
-};
-
-exports.processNextTickPatch = function(test) {
-	test.expect(2);
-	process.oldNextTick = process.nextTick;
-	process.nextTick = undefined;
-	var sloppy2 = require('../lib/sloppy-queue-flow', true);
-	test.equal(process.nextTick, setTimeout, 'setTimeout is properly substituted in for process.nextTick');
-	// jscoverage can't handle two different requires of the same module where the module goes through a
-	// different initialization path. The following is a hack to get the coverage report to remove the
-	// clearly-covered lines of code. (I don't expect this code to change much, if ever, so this should be fine)
-	for(var i in _$jscoverage) {
-		source = _$jscoverage[i].source;
-		for(var j = 0; j < _$jscoverage[i].length; j++) {
-			if(/process = process/.test(source[j-1])) _$jscoverage[i][j] = undefined;
-			if(/process\.nextTick = process\.nextTick/.test(source[j-1])) _$jscoverage[i][j] = undefined;
-		}
-	}
-	test.ok(!!sloppy2(), 'can construct sloppy-queue-flow objects without process.nextTick');
-	// Restore environment back to normal
-	process.nextTick = process.oldNextTick;
-	process.oldNextTick = undefined;
-	test.done();
 };
 
 exports.jscoverage = function(test) {

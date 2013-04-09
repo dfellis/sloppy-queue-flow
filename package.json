@@ -5,21 +5,22 @@
 	"author": "David Ellis",
 	"version": "0.1.15",
 	"main": "./lib/sloppy-queue-flow",
-	"peerDependencies": {
-		"queue-flow": ">=0.5.27 <0.6.0"
+	"dependencies": {
+        "async-cancelable-events": "0.0.3",
+		"queue-flow": "0.6.5"
 	},
 	"devDependencies": {
 		"nodeunit": "*",
 		"docco": "*",
 		"uglify-js": "*",
-        "jscoverage": "0.2.5",
-        "queue-flow": ">=0.5.27 <0.6.0"
+        "jscoverage": "*",
+        "browserify": "*"
 	},
 	"engines": {
 		"node": ">=0.6.3"
 	},
 	"scripts": {
-		"realpublish": "npm test && docco ./lib/sloppy-queue-flow.js && uglifyjs ./lib/sloppy-queue-flow.js > ./lib/sloppy-queue-flow.min.js && git commit -am \"Automatic doc and minification for version $npm_package_version\" && git tag $npm_package_version && git push && git push --tags && npm publish",
+		"realpublish": "npm test && docco ./lib/sloppy-queue-flow.js && browserify ./lib/sloppy-queue-flow.js | uglifyjs > ./lib/sloppy-queue-flow.min.js && git commit -am \"Automatic doc and minification for version $npm_package_version\" && git tag $npm_package_version && git push && git push --tags && npm publish",
 		"test": "nodeunit ./test/test.js"
 	}
 }
